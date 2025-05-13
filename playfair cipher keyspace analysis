@@ -1,0 +1,20 @@
+import math
+
+def calculate_playfair_keys():
+    total_letters = 25
+    
+    possible_keys = math.factorial(total_letters) / (math.factorial(2) ** (total_letters // 2))
+    
+    power_of_2 = math.log2(possible_keys)
+    
+    return possible_keys, power_of_2
+
+def unique_playfair_keys():
+    unique_keys = (25 * 24) // 2  
+    return unique_keys
+
+possible_keys, power_of_2 = calculate_playfair_keys()
+unique_keys = unique_playfair_keys()
+
+print(f"Total possible keys: {possible_keys} (approx. 2^{power_of_2})")
+print(f"Effectively unique keys: {unique_keys}")
