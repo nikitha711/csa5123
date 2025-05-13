@@ -1,0 +1,53 @@
+
+import string
+from collections import Counter
+
+ENGLISH_FREQUENCY = {
+    'a': 0.08167, 'b': 0.01492, 'c': 0.02782, 'd': 0.04253, 'e': 0.12702,
+    'f': 0.02228, 'g': 0.02015, 'h': 0.06094, 'i': 0.06966, 'j': 0.00153,
+    'k': 0.00772, 'l': 0.04025, 'm': 0.02406, 'n': 0.06749, 'o': 0.07507,
+    'p': 0.01929, 'q': 0.00095, 'r': 0.05987, 's': 0.06327, 't': 0.09056,
+    'u': 0.02758, 'v': 0.01037, 'w': 0.02465, 'x': 0.00150, 'y': 0.01971,
+    'z': 0.00074
+}
+
+def frequency_analysis(ciphertext):
+    letter_count = Counter(filter(str.isalpha, ciphertext.lower()))
+    total_letters = sum(letter_count.values())
+    frequency = {letter: count / total_letters for letter, count in letter_count.items()}
+    return frequency
+
+def score_plaintext(plaintext):
+    score = 0
+    for letter in plaintext:
+        if letter in ENGLISH_FREQUENCY:
+            score += ENGLISH_FREQUENCY[letter]
+    return score
+
+def decrypt(ciphertext, key):
+    decrypted = []
+    for char in ciphertext:
+        if char.isalpha():
+            index = (ord(char.lower()) - ord('a') - key) % 26
+            decrypted.append(chr(index + ord('a')))
+        else:
+            decrypted.append(char)
+    return ''.join(decrypted)
+
+def letter_frequency_attack(ciphertext, top_n=10):
+    possible_plaintexts = []
+    for key in range(26):
+        plaintext = decrypt(ciphertext, key)
+        score = score_plaintext(plaintext)
+        possible_plaintexts.append((plaintext, score))
+    
+    possible_plaintexts.sort(key=lambda x: x[1], reverse=True)
+    return possible_plaintexts[:top_n]
+
+if __name__ == "__main__":
+    ciphertext = input("Enter the ciphertext: ")
+    top_n = int(input("How many possible plaintexts do you want? "))
+    results = letter_frequency_attack(ciphertext, top_n)
+    
+    for i, (plaintext, score) in enumerate(results):
+        print(f"{i + 1}: {plaintext} (Score: {score})")
