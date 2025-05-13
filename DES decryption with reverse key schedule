@@ -1,0 +1,16 @@
+def xor_encrypt_decrypt(data, key):
+  
+    return bytes([byte ^ key for byte in data])
+
+if __name__ == "__main__":
+    
+    plaintext = "hello world"
+    plaintext_bytes = plaintext.encode()
+
+    key = 123  # You can choose any integer key
+    
+    encrypted = xor_encrypt_decrypt(plaintext_bytes, key)
+    print("Encrypted:", encrypted)
+
+    decrypted = xor_encrypt_decrypt(encrypted, key)
+    print("Decrypted:", decrypted.decode())  # Convert bytes back to string
