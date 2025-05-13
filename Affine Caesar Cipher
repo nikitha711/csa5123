@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+int gcd(int a, int b) {
+    while (b != 0) {
+        int t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
+int mod_inverse(int a, int m) {
+    for (int x = 1; x < m; x++) {
+        if ((a * x) % m == 1) {
+            return x;
+        }
+    }
+    return -1; // No modular inverse
+}
+
+char encrypt(int a, int b, char p) {
+    if (p < 'A' || p > 'Z') return p; 
+    return (char)(((a * (p - 'A') + b) % 26) + 'A');
+}
+
+char decrypt(int a, int b, char c) {
+    int a_inv = mod_inverse(a, 26);
+    if (a_inv == -1) return c; 
+    if (c < 'A' || c > 'Z') return c; 
+    return (char)(((a_inv * ((c - 'A') - b + 26)) % 26) + 'A');
+}
+
+int main() {
+    int a = 5;
+    int b = 8; 
+    char plaintext[] = "HELLO";
+    char ciphertext[sizeof(plaintext)];
+
+    for (int i = 0; plaintext[i] != '\0'; i++) {
+        ciphertext[i] = encrypt(a, b, plaintext[i]);
+    }
+    ciphertext[sizeof(plaintext) - 1] = '\0'; 
+
+    printf("Ciphertext: %s\n", ciphertext);
+
+    char decryptedtext[sizeof(ciphertext)];
+    for (int i = 0; ciphertext[i] != '\0'; i++) {
+        decryptedtext[i] = decrypt(a, b, ciphertext[i]);
+    }
+    decryptedtext[sizeof(ciphertext) - 1] = '\0'; 
+
+    printf("Decrypted Text: %s\n", decryptedtext);
+
+    return 0;
+}
