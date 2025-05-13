@@ -1,0 +1,27 @@
+import random
+
+def generate_key(length):
+    return [random.randint(0, 26) for _ in range(length)]
+
+def encrypt(plaintext, key):
+    ciphertext = []
+    for i, char in enumerate(plaintext):
+        if char.isalpha():
+            shift = key[i % len(key)]
+            base = ord('A') if char.isupper() else ord('a')
+            encrypted_char = chr((ord(char) - base + shift) % 26 + base)
+            ciphertext.append(encrypted_char)
+        else:
+            ciphertext.append(char)
+    return ''.join(ciphertext)
+
+def main():
+    plaintext = input("Enter the plaintext: ")
+    key_length = len(plaintext)
+    key = generate_key(key_length)
+    ciphertext = encrypt(plaintext, key)
+    print("Generated Key:", key)
+    print("Ciphertext:", ciphertext)
+
+if __name__ == "__main__":
+    main()
