@@ -1,0 +1,19 @@
+def generate_monoalphabetic_cipher(keyword):
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    keyword = ''.join(sorted(set(keyword), key=keyword.index)).upper()
+    cipher = keyword + ''.join([letter for letter in alphabet if letter not in keyword])
+    return cipher
+
+def create_cipher_mapping():
+    keyword = "CIPHER"
+    cipher = generate_monoalphabetic_cipher(keyword)
+    
+    plain = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    mapping = {plain[i]: cipher[i] for i in range(len(plain))}
+    
+    return mapping
+
+if __name__ == "__main__":
+    cipher_mapping = create_cipher_mapping()
+    for plain_letter, cipher_letter in cipher_mapping.items():
+        print(f"{plain_letter} -> {cipher_letter}")
