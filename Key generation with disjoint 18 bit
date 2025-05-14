@@ -1,0 +1,32 @@
+def left_shift(bits, shifts):
+    return bits[shifts:] + bits[:shifts]
+
+def generate_subkeys(key):
+   
+    key = [int(bit) for bit in key]
+    C = key[:28]
+    D = key[28:]
+
+    subkeys = []
+    for i in range(16):
+       
+        C = left_shift(C, shifts[i])
+        D = left_shift(D, shifts[i])
+        
+       
+        combined_key = C + D
+        
+        
+        subkey = [combined_key[i] for i in pc2]
+        subkeys.append(subkey)
+    
+    return subkeys
+
+
+initial_key = "1010101010111011000011110000111100001111000011110000111100001111"
+shifts = [1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1]
+pc2 = [13, 16, 10, 23, 0, 4, 2, 27, 14, 5, 20, 9, 22, 18, 11, 3, 25, 7, 15, 6, 26, 19, 12, 1, 40, 51, 30, 36, 46, 54, 29, 39, 50, 44, 32, 47, 43, 48, 38, 55, 33, 52, 45, 41, 49, 35, 28, 31]
+
+subkeys = generate_subkeys(initial_key)
+for i, subkey in enumerate(subkeys):
+    print(f"Subkey {i + 1}: {''.join(map(str, subkey))}")
