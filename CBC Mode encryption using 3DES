@@ -1,0 +1,39 @@
+ def xor_encrypt_decrypt(data, key):
+   
+    return bytes([byte ^ key for byte in data])
+
+def pad(plaintext, block_size):
+   
+    padding_len = block_size - len(plaintext) % block_size
+    return plaintext + bytes([padding_len] * padding_len)
+
+def unpad(padded_data):
+   
+    padding_len = padded_data[-1]
+    return padded_data[:-padding_len]
+
+def encrypt(plaintext, key):
+   
+    plaintext_bytes = plaintext.encode()
+    padded_data = pad(plaintext_bytes, 8)  # Use 8-byte blocks (simulating DES block size)
+    
+   
+    encrypted_data = xor_encrypt_decrypt(padded_data, key)
+    return encrypted_data
+
+def decrypt(ciphertext, key):
+    
+    decrypted_data = xor_encrypt_decrypt(ciphertext, key)
+    
+    
+    return unpad(decrypted_data).decode()
+
+
+key = 123  # Simple integer key for XOR encryption (can be any integer)
+plaintext = "Hello, World!"  # Example plaintext
+ciphertext = encrypt(plaintext, key)  # Encrypt the message
+decrypted = decrypt(ciphertext, key)  # Decrypt back to original
+
+
+print(f"Ciphertext: {ciphertext.hex()}")  # Display the ciphertext in hex
+print(f"Decrypted: {decrypted}")  # Display the decrypted message
