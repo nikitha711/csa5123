@@ -1,0 +1,17 @@
+from math import gcd
+
+def rsa_common_factor(n, e, block):
+    common_factor = gcd(n, block)
+    if common_factor > 1:
+        print(f"Common factor found: {common_factor}")
+        return common_factor
+    else:
+        print("No common factor found.")
+        return None
+
+# Example usage
+n = 55  # Example modulus (n = pq)
+e = 3   # Public exponent
+block = 15  # Example plaintext block
+
+rsa_common_factor(n, e, block)
